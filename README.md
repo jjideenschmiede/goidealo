@@ -58,7 +58,7 @@ AccessToken: "",
 }
 
 // Delete an offer
-err := DeleteOffer(325081, "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40", r)
+err := goidealo.DeleteOffer(325081, "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40", r)
 if err != nil {
     fmt.Println(err)
 }
@@ -76,6 +76,23 @@ r := goidealo.Request{
 
 // Delete all existing offers
 err := goidealo.DeleteAllOffers(325081, r)
+if err != nil {
+    fmt.Println(err)
+}
+```
+
+## Updating the import timestamp for all offers
+
+If you want to update the timestamp of all products, you can do it as follows. You only need the store id and the access token. [Here](https://import.idealo.com/docs/#_update_timestamp) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+}
+
+// Update the timestamp
+err := goidealo.UpdateOffersTimestamp(325081, r)
 if err != nil {
     fmt.Println(err)
 }
