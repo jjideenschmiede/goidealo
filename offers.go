@@ -16,6 +16,75 @@ import (
 	"fmt"
 )
 
+// OfferBody is to structure the body data
+type OfferBody struct {
+	Sku                      string                  `json:"sku,omitempty"`
+	Title                    string                  `json:"title,omitempty"`
+	Price                    string                  `json:"price,omitempty"`
+	Url                      string                  `json:"url,omitempty"`
+	PaymentCosts             OfferBodyPaymentCosts   `json:"paymentCosts,omitempty"`
+	DeliveryCosts            OfferBodyDeliveryCosts  `json:"deliveryCosts,omitempty"`
+	BasePrice                string                  `json:"basePrice,omitempty"`
+	PackagingUnit            int                     `json:"packagingUnit,omitempty"`
+	VoucherCode              string                  `json:"voucherCode,omitempty"`
+	BranchId                 string                  `json:"branchId,omitempty"`
+	Brand                    string                  `json:"brand,omitempty"`
+	Oens                     []string                `json:"oens,omitempty"`
+	CategoryPath             []string                `json:"categoryPath,omitempty"`
+	Description              string                  `json:"description,omitempty"`
+	ImageUrls                []string                `json:"imageUrls,omitempty"`
+	Eans                     []string                `json:"eans,omitempty"`
+	Hans                     []string                `json:"hans,omitempty"`
+	Pzns                     []string                `json:"pzns,omitempty"`
+	Kbas                     []string                `json:"kbas,omitempty"`
+	MerchantName             string                  `json:"merchantName,omitempty"`
+	MerchantId               string                  `json:"merchantId,omitempty"`
+	DeliveryComment          string                  `json:"deliveryComment,omitempty"`
+	Delivery                 string                  `json:"delivery,omitempty"`
+	MaxOrderProcessingTime   int                     `json:"maxOrderProcessingTime,omitempty"`
+	FreeReturnDays           int                     `json:"freeReturnDays,omitempty"`
+	Checkout                 bool                    `json:"checkout,omitempty"`
+	CheckoutLimitPerPeriod   int                     `json:"checkoutLimitPerPeriod,omitempty"`
+	QuantityPerOrder         int                     `json:"quantityPerOrder,omitempty"`
+	MinimumPrice             string                  `json:"minimumPrice,omitempty"`
+	FulfillmentType          string                  `json:"fulfillmentType,omitempty"`
+	TwoManHandlingFee        string                  `json:"twoManHandlingFee,omitempty"`
+	DisposalFee              string                  `json:"disposalFee,omitempty"`
+	Eec                      string                  `json:"eec,omitempty"`
+	EnergyLabels             []OfferBodyEnergyLabels `json:"energyLabels,omitempty"`
+	Deposit                  string                  `json:"deposit,omitempty"`
+	Size                     string                  `json:"size,omitempty"`
+	Colour                   string                  `json:"colour,omitempty"`
+	Gender                   string                  `json:"gender,omitempty"`
+	Material                 string                  `json:"material,omitempty"`
+	Replica                  bool                    `json:"replica,omitempty"`
+	Used                     bool                    `json:"used,omitempty"`
+	Download                 bool                    `json:"download,omitempty"`
+	DynamicProductAttributes interface{}             `json:"dynamicProductAttributes,omitempty"`
+}
+
+type OfferBodyPaymentCosts struct {
+	PAYPAL string `json:"PAYPAL,omitempty"`
+}
+
+type OfferBodyDeliveryCosts struct {
+	DHL string `json:"DHL,omitempty"`
+}
+
+type OfferBodyEnergyLabels struct {
+	EfficiencyClass           string `json:"efficiencyClass,omitempty"`
+	Spectrum                  string `json:"spectrum,omitempty"`
+	LabelUrl                  string `json:"labelUrl,omitempty"`
+	DataSheetUrl              string `json:"dataSheetUrl,omitempty"`
+	FuelEfficiencyClass       string `json:"fuelEfficiencyClass,omitempty"`
+	WetGripClass              string `json:"wetGripClass,omitempty"`
+	ExternalRollingNoise      int    `json:"externalRollingNoise,omitempty"`
+	ExternalRollingNoiseClass string `json:"externalRollingNoiseClass,omitempty"`
+	SnowGrip                  bool   `json:"snowGrip,omitempty"`
+	IceGrip                   bool   `json:"iceGrip,omitempty"`
+	Version                   int    `json:"version,omitempty"`
+}
+
 // OfferReturn is to decode the json data
 type OfferReturn struct {
 	Sku           string   `json:"sku"`
@@ -66,19 +135,16 @@ type OfferReturn struct {
 		DataSheetUrl    string `json:"dataSheetUrl"`
 		Version         int    `json:"version"`
 	} `json:"energyLabels"`
-	Deposit                  string `json:"deposit"`
-	Size                     string `json:"size"`
-	Colour                   string `json:"colour"`
-	Gender                   string `json:"gender"`
-	Material                 string `json:"material"`
-	Replica                  bool   `json:"replica"`
-	Used                     bool   `json:"used"`
-	Download                 bool   `json:"download"`
-	DynamicProductAttributes struct {
-		Field1 []string `json:"22337"`
-		Field2 []string `json:"19326"`
-	} `json:"dynamicProductAttributes"`
-	FieldErrors []struct {
+	Deposit                  string      `json:"deposit"`
+	Size                     string      `json:"size"`
+	Colour                   string      `json:"colour"`
+	Gender                   string      `json:"gender"`
+	Material                 string      `json:"material"`
+	Replica                  bool        `json:"replica"`
+	Used                     bool        `json:"used"`
+	Download                 bool        `json:"download"`
+	DynamicProductAttributes interface{} `json:"dynamicProductAttributes"`
+	FieldErrors              []struct {
 		Field   string `json:"field"`
 		Message string `json:"message"`
 	} `json:"fieldErrors"`
@@ -93,6 +159,51 @@ func Offer(shopId int, sku string, r Request) (OfferReturn, error) {
 		Pws:    true,
 		Path:   fmt.Sprintf("/shop/%d/offer/%s", shopId, sku),
 		Method: "GET",
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Decode data
+	var decode OfferReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// CreateOffer is to create an new offer
+func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
+
+	// Convert body
+	convert, err := json.Marshal(body)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Config new request
+	c := Config{
+		Pws:    true,
+		Path:   fmt.Sprintf("/shop/%d/offer/%s", shopId, body.Sku),
+		Method: "PUT",
+		Body:   convert,
 	}
 
 	// Send new request
