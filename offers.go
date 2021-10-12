@@ -182,3 +182,33 @@ func DeleteAllOffers(shopId int, r Request) error {
 	return nil
 
 }
+
+// UpdateOffersTimestamp is to update the timestamp of all offers
+func UpdateOffersTimestamp(shopId int, r Request) error {
+
+	// Config new request
+	c := Config{
+		Pws:    true,
+		Path:   fmt.Sprintf("/shop/%d/offer", shopId),
+		Method: "PUT",
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return err
+	}
+
+	// Return nothing
+	return nil
+
+}
