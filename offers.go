@@ -123,6 +123,36 @@ func Offer(shopId int, sku string, r Request) (OfferReturn, error) {
 
 }
 
+// DeleteOffer is to delete an offer
+func DeleteOffer(shopId int, sku string, r Request) error {
+
+	// Config new request
+	c := Config{
+		Pws:    true,
+		Path:   fmt.Sprintf("/shop/%d/offer/%s", shopId, sku),
+		Method: "DELETE",
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return err
+	}
+
+	// Return nothing
+	return nil
+
+}
+
 // DeleteAllOffers is to delete all existing offers
 func DeleteAllOffers(shopId int, r Request) error {
 
