@@ -78,6 +78,11 @@ type OfferReturn struct {
 		Field1 []string `json:"22337"`
 		Field2 []string `json:"19326"`
 	} `json:"dynamicProductAttributes"`
+	FieldErrors []struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"fieldErrors"`
+	GeneralErrors []string `json:"generalErrors,omitempty"`
 }
 
 // Offer is to get an offer by id
@@ -98,6 +103,12 @@ func Offer(shopId int, sku string, r Request) (OfferReturn, error) {
 
 	// Close request body
 	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return OfferReturn{}, err
+	}
 
 	// Decode data
 	var decode OfferReturn
@@ -130,6 +141,12 @@ func DeleteAllOffers(shopId int, r Request) error {
 
 	// Close request body
 	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return err
+	}
 
 	// Return nothing
 	return nil
