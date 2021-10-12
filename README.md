@@ -6,6 +6,8 @@ Here you can find our library for idealo. We develop the API endpoints according
 
 To generate an access token for the pws api, you can use the following function. **Important! The bearer token must be renewed after 3600 seconds.**
 
+[Here](https://import.idealo.com/docs/#authorization-token) you can find the description in the idealo documentation.
+
 ```go
 // Define request
 r := goidealo.Request{
@@ -28,6 +30,8 @@ With this function you can read an offer based on the sku. The following attribu
 
 Also the shop id, the Sku and the and the access token is needed in the request struct. This must be generated before via the function: **goidealo.PwsAccessToken(r)**.
 
+[Here](https://import.idealo.com/docs/#_get) you can find the description in the idealo documentation.
+
 ```go
 // Define request
 r := goidealo.Request{
@@ -40,5 +44,22 @@ if err != nil {
     fmt.Println(err)
 } else {
     fmt.Println(offer)
+}
+```
+
+## Delete all existing offers
+
+If you want to remove all existing offers, then you can do this with the following function, for this the shop id and the access token are needed. [Here](https://import.idealo.com/docs/#_delete_all) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+}
+
+// Delete all existing offers
+err := goidealo.DeleteAllOffers(325081, r)
+if err != nil {
+    fmt.Println(err)
 }
 ```
