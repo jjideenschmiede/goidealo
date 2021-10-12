@@ -47,6 +47,23 @@ if err != nil {
 }
 ```
 
+## Delete an offer 
+
+If you want to remove a special offer, you can do this with the following function. For this some attributes like shop id, sku and the access token are needed. [Here](https://import.idealo.com/docs/#_delete) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+AccessToken: "",
+}
+
+// Delete an offer
+err := DeleteOffer(325081, "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40", r)
+if err != nil {
+    fmt.Println(err)
+}
+```
+
 ## Delete all existing offers
 
 If you want to remove all existing offers, then you can do this with the following function, for this the shop id and the access token are needed. [Here](https://import.idealo.com/docs/#_delete_all) you can find the description in the idealo documentation.
