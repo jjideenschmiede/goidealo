@@ -47,6 +47,82 @@ if err != nil {
 }
 ```
 
+## Writes an offer
+
+If you want to create a new offer, then this goes as follows. Some attributes are needed for this. You can see them in the following example. [Here](https://import.idealo.com/docs/#_put) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+}
+
+// Set body
+body := OfferBody{
+    Sku:   "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40",
+    Title: "Lloyd Men Hagen 27-600-12 Herren Schuhe Derby Schnürer Wildleder Dunkelbraun",
+    Price: "89.95",
+    Url:   "http://www.shoes4friends.de",
+    PaymentCosts: OfferBodyPaymentCosts{
+        PAYPAL: "2.63",
+    },
+    DeliveryCosts: OfferBodyDeliveryCosts{
+        DHL: "0.69",
+    },
+    BasePrice:                "",
+    PackagingUnit:            5,
+    VoucherCode:              "",
+    BranchId:                 "lloyd",
+    Brand:                    "Lloyd",
+    Oens:                     nil,
+    CategoryPath:             nil,
+    Description:              "Lloyd Men Hagen 27-600-12 Herren Schuhe Derby Schnürer Wildleder Dunkelbraun",
+    ImageUrls:                nil,
+    Eans:                     nil,
+    Hans:                     nil,
+    Pzns:                     nil,
+    Kbas:                     nil,
+    MerchantName:             "",
+    MerchantId:               "",
+    DeliveryComment:          "",
+    Delivery:                 "1-3 Werktage",
+    MaxOrderProcessingTime:   1,
+    FreeReturnDays:           30,
+    Checkout:                 true,
+    CheckoutLimitPerPeriod:   13,
+    QuantityPerOrder:         2,
+    MinimumPrice:             "",
+    FulfillmentType:          "",
+    TwoManHandlingFee:        "",
+    DisposalFee:              "",
+    Eec:                      "",
+    EnergyLabels:             nil,
+    Deposit:                  "",
+    Size:                     "",
+    Colour:                   "",
+    Gender:                   "",
+    Material:                 "",
+    Replica:                  false,
+    Used:                     false,
+    Download:                 false,
+    DynamicProductAttributes: nil,
+}
+
+// Add images
+body.ImageUrls = append(body.ImageUrls, "https://www.marken-schuhmarkt.de/21-Lloyd-Herren-Schuhe-Derby-Halbschuhe-Wildleder-Hagen-27-600-12-braun-001.jpg")
+
+// Add eans
+body.Eans = append(body.Eans, "4032055134146")
+
+// Update the timestamp
+offer, err := CreateOffer(325081, body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(offer)
+}
+```
+
 ## Delete an offer 
 
 If you want to remove a special offer, you can do this with the following function. For this some attributes like shop id, sku and the access token are needed. [Here](https://import.idealo.com/docs/#_delete) you can find the description in the idealo documentation.
