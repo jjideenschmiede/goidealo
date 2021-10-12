@@ -25,7 +25,7 @@ const (
 
 // Config is to define config data
 type Config struct {
-	accessToken, pws, moa bool
+	AccessToken, Pws, Moa bool
 	Path, Method          string
 	Body                  []byte
 }
@@ -42,11 +42,11 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	var url string
 
 	switch {
-	case c.accessToken:
+	case c.AccessToken:
 		url = accessTokenUrl
-	case c.pws:
+	case c.Pws:
 		url = pwsBaseUrl + c.Path
-	case c.moa:
+	case c.Moa:
 		url = moaBaseUrl + c.Path
 	}
 
@@ -60,7 +60,7 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	}
 
 	// Check api type & add an api header
-	if c.pws || c.moa {
+	if c.Pws || c.Moa {
 		request.Header.Set("Content-Type", "application/json")
 		request.Header.Set("Authorization", "Bearer "+r.AccessToken)
 	} else {
