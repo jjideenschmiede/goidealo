@@ -58,15 +58,15 @@ r := goidealo.Request{
 }
 
 // Set body
-body := OfferBody{
+body := goidealo.OfferBody{
     Sku:   "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40",
     Title: "Lloyd Men Hagen 27-600-12 Herren Schuhe Derby Schnürer Wildleder Dunkelbraun",
     Price: "89.95",
     Url:   "http://www.shoes4friends.de",
-    PaymentCosts: OfferBodyPaymentCosts{
+    PaymentCosts: &goidealo.OfferBodyPaymentCosts{
         PAYPAL: "2.63",
     },
-    DeliveryCosts: OfferBodyDeliveryCosts{
+    DeliveryCosts: &goidealo.OfferBodyDeliveryCosts{
         DHL: "0.69",
     },
     BasePrice:                "",
@@ -115,13 +115,35 @@ body.ImageUrls = append(body.ImageUrls, "https://www.marken-schuhmarkt.de/21-Llo
 body.Eans = append(body.Eans, "4032055134146")
 
 // Update the timestamp
-offer, err := CreateOffer(325081, body, r)
+offer, err := goidealo.CreateOffer(325081, body, r)
 if err != nil {
     fmt.Println(err)
 } else {
     fmt.Println(offer)
 }
 ```
+
+## Partially updates an offer
+
+If you want to revise an offer, you can do it as follows. [Here](https://import.idealo.com/docs/#_patch) you can find the description in the idealo documentation.
+
+```go
+// Set body
+body := goidealo.OfferBody{
+    Sku:   "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40",
+    Title: "Lloyd Men Hagen 27-600-12 Herren Schuhe Derby Schnürer Wildleder Dunkelbraun",
+    Price: "189.95",
+}
+
+// Update an offer
+offer, err := goidealo.UpdateOffer(325081, body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(offer)
+}
+```
+
 
 ## Delete an offer 
 
