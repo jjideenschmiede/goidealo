@@ -18,49 +18,49 @@ import (
 
 // OfferBody is to structure the body data
 type OfferBody struct {
-	Sku                      string                  `json:"sku,omitempty"`
-	Title                    string                  `json:"title,omitempty"`
-	Price                    string                  `json:"price,omitempty"`
-	Url                      string                  `json:"url,omitempty"`
-	PaymentCosts             OfferBodyPaymentCosts   `json:"paymentCosts,omitempty"`
-	DeliveryCosts            OfferBodyDeliveryCosts  `json:"deliveryCosts,omitempty"`
-	BasePrice                string                  `json:"basePrice,omitempty"`
-	PackagingUnit            int                     `json:"packagingUnit,omitempty"`
-	VoucherCode              string                  `json:"voucherCode,omitempty"`
-	BranchId                 string                  `json:"branchId,omitempty"`
-	Brand                    string                  `json:"brand,omitempty"`
-	Oens                     []string                `json:"oens,omitempty"`
-	CategoryPath             []string                `json:"categoryPath,omitempty"`
-	Description              string                  `json:"description,omitempty"`
-	ImageUrls                []string                `json:"imageUrls,omitempty"`
-	Eans                     []string                `json:"eans,omitempty"`
-	Hans                     []string                `json:"hans,omitempty"`
-	Pzns                     []string                `json:"pzns,omitempty"`
-	Kbas                     []string                `json:"kbas,omitempty"`
-	MerchantName             string                  `json:"merchantName,omitempty"`
-	MerchantId               string                  `json:"merchantId,omitempty"`
-	DeliveryComment          string                  `json:"deliveryComment,omitempty"`
-	Delivery                 string                  `json:"delivery,omitempty"`
-	MaxOrderProcessingTime   int                     `json:"maxOrderProcessingTime,omitempty"`
-	FreeReturnDays           int                     `json:"freeReturnDays,omitempty"`
-	Checkout                 bool                    `json:"checkout,omitempty"`
-	CheckoutLimitPerPeriod   int                     `json:"checkoutLimitPerPeriod,omitempty"`
-	QuantityPerOrder         int                     `json:"quantityPerOrder,omitempty"`
-	MinimumPrice             string                  `json:"minimumPrice,omitempty"`
-	FulfillmentType          string                  `json:"fulfillmentType,omitempty"`
-	TwoManHandlingFee        string                  `json:"twoManHandlingFee,omitempty"`
-	DisposalFee              string                  `json:"disposalFee,omitempty"`
-	Eec                      string                  `json:"eec,omitempty"`
-	EnergyLabels             []OfferBodyEnergyLabels `json:"energyLabels,omitempty"`
-	Deposit                  string                  `json:"deposit,omitempty"`
-	Size                     string                  `json:"size,omitempty"`
-	Colour                   string                  `json:"colour,omitempty"`
-	Gender                   string                  `json:"gender,omitempty"`
-	Material                 string                  `json:"material,omitempty"`
-	Replica                  bool                    `json:"replica,omitempty"`
-	Used                     bool                    `json:"used,omitempty"`
-	Download                 bool                    `json:"download,omitempty"`
-	DynamicProductAttributes interface{}             `json:"dynamicProductAttributes,omitempty"`
+	Sku                      string                   `json:"sku,omitempty"`
+	Title                    string                   `json:"title,omitempty"`
+	Price                    string                   `json:"price,omitempty"`
+	Url                      string                   `json:"url,omitempty"`
+	PaymentCosts             *OfferBodyPaymentCosts   `json:"paymentCosts,omitempty"`
+	DeliveryCosts            *OfferBodyDeliveryCosts  `json:"deliveryCosts,omitempty"`
+	BasePrice                string                   `json:"basePrice,omitempty"`
+	PackagingUnit            int                      `json:"packagingUnit,omitempty"`
+	VoucherCode              string                   `json:"voucherCode,omitempty"`
+	BranchId                 string                   `json:"branchId,omitempty"`
+	Brand                    string                   `json:"brand,omitempty"`
+	Oens                     []string                 `json:"oens,omitempty"`
+	CategoryPath             []string                 `json:"categoryPath,omitempty"`
+	Description              string                   `json:"description,omitempty"`
+	ImageUrls                []string                 `json:"imageUrls,omitempty"`
+	Eans                     []string                 `json:"eans,omitempty"`
+	Hans                     []string                 `json:"hans,omitempty"`
+	Pzns                     []string                 `json:"pzns,omitempty"`
+	Kbas                     []string                 `json:"kbas,omitempty"`
+	MerchantName             string                   `json:"merchantName,omitempty"`
+	MerchantId               string                   `json:"merchantId,omitempty"`
+	DeliveryComment          string                   `json:"deliveryComment,omitempty"`
+	Delivery                 string                   `json:"delivery,omitempty"`
+	MaxOrderProcessingTime   int                      `json:"maxOrderProcessingTime,omitempty"`
+	FreeReturnDays           int                      `json:"freeReturnDays,omitempty"`
+	Checkout                 bool                     `json:"checkout,omitempty"`
+	CheckoutLimitPerPeriod   int                      `json:"checkoutLimitPerPeriod,omitempty"`
+	QuantityPerOrder         int                      `json:"quantityPerOrder,omitempty"`
+	MinimumPrice             string                   `json:"minimumPrice,omitempty"`
+	FulfillmentType          string                   `json:"fulfillmentType,omitempty"`
+	TwoManHandlingFee        string                   `json:"twoManHandlingFee,omitempty"`
+	DisposalFee              string                   `json:"disposalFee,omitempty"`
+	Eec                      string                   `json:"eec,omitempty"`
+	EnergyLabels             []*OfferBodyEnergyLabels `json:"energyLabels,omitempty"`
+	Deposit                  string                   `json:"deposit,omitempty"`
+	Size                     string                   `json:"size,omitempty"`
+	Colour                   string                   `json:"colour,omitempty"`
+	Gender                   string                   `json:"gender,omitempty"`
+	Material                 string                   `json:"material,omitempty"`
+	Replica                  bool                     `json:"replica,omitempty"`
+	Used                     bool                     `json:"used,omitempty"`
+	Download                 bool                     `json:"download,omitempty"`
+	DynamicProductAttributes interface{}              `json:"dynamicProductAttributes,omitempty"`
 }
 
 type OfferBodyPaymentCosts struct {
@@ -203,6 +203,51 @@ func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 		Pws:    true,
 		Path:   fmt.Sprintf("/shop/%d/offer/%s", shopId, body.Sku),
 		Method: "PUT",
+		Body:   convert,
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Decode data
+	var decode OfferReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// UpdateOffer is to update an existing offer
+func UpdateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
+
+	// Convert body
+	convert, err := json.Marshal(body)
+	if err != nil {
+		return OfferReturn{}, err
+	}
+
+	// Config new request
+	c := Config{
+		Pws:    true,
+		Path:   fmt.Sprintf("/shop/%d/offer/%s", shopId, body.Sku),
+		Method: "PATCH",
 		Body:   convert,
 	}
 
