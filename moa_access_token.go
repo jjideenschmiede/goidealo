@@ -28,7 +28,14 @@ func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 	// Config new request
 	c := Config{
 		MoaAccessToken: true,
+		Path:           "/api/v2/oauth/token",
 		Method:         "POST",
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.MoaAccessToken = false
+		c.MoaSandbox = true
 	}
 
 	// Send new request
@@ -39,6 +46,12 @@ func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 
 	// Close request body
 	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return MoaAccessTokenReturn{}, err
+	}
 
 	// Decode data
 	var decode MoaAccessTokenReturn
