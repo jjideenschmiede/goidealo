@@ -18,18 +18,35 @@ import (
 	"time"
 )
 
+// MerchantOrderNumberBody is to structure the data
+type MerchantOrderNumberBody struct {
+	MerchantOrderNumber string `json:"merchantOrderNumber"`
+}
+
+// MerchantOrderNumberReturn is to decode the json return
+type MerchantOrderNumberReturn struct {
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Instance    string `json:"instance"`
+	FieldErrors []struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"fieldErrors"`
+}
+
 // OrdersReturn is to decode the json return
 type OrdersReturn struct {
 	Content []struct {
-		IdealoOrderId string    `json:"idealoOrderId"`
-		Created       time.Time `json:"created"`
-		Updated       time.Time `json:"updated"`
-		Status        string    `json:"status"`
-		Currency      string    `json:"currency"`
-		OffersPrice   string    `json:"offersPrice"`
-		GrossPrice    string    `json:"grossPrice"`
-		ShippingCosts string    `json:"shippingCosts"`
-		LineItems     []struct {
+		IdealoOrderId       string    `json:"idealoOrderId"`
+		MerchantOrderNumber string    `json:"merchantOrderNumber"`
+		Created             time.Time `json:"created"`
+		Updated             time.Time `json:"updated"`
+		Status              string    `json:"status"`
+		Currency            string    `json:"currency"`
+		OffersPrice         string    `json:"offersPrice"`
+		GrossPrice          string    `json:"grossPrice"`
+		ShippingCosts       string    `json:"shippingCosts"`
+		LineItems           []struct {
 			Title                string `json:"title"`
 			Price                string `json:"price"`
 			Quantity             int    `json:"quantity"`
@@ -75,15 +92,16 @@ type OrdersReturn struct {
 
 // OrderReturn is to decode the json data
 type OrderReturn struct {
-	IdealoOrderId string    `json:"idealoOrderId"`
-	Created       time.Time `json:"created"`
-	Updated       time.Time `json:"updated"`
-	Status        string    `json:"status"`
-	Currency      string    `json:"currency"`
-	OffersPrice   string    `json:"offersPrice"`
-	GrossPrice    string    `json:"grossPrice"`
-	ShippingCosts string    `json:"shippingCosts"`
-	LineItems     []struct {
+	IdealoOrderId       string    `json:"idealoOrderId"`
+	MerchantOrderNumber string    `json:"merchantOrderNumber"`
+	Created             time.Time `json:"created"`
+	Updated             time.Time `json:"updated"`
+	Status              string    `json:"status"`
+	Currency            string    `json:"currency"`
+	OffersPrice         string    `json:"offersPrice"`
+	GrossPrice          string    `json:"grossPrice"`
+	ShippingCosts       string    `json:"shippingCosts"`
+	LineItems           []struct {
 		Title                string `json:"title"`
 		Price                string `json:"price"`
 		Quantity             int    `json:"quantity"`
@@ -224,6 +242,57 @@ func Order(shopId int, id string, r Request) (OrderReturn, error) {
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
 		return OrderReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// MerchantOrderNumber is to set the merchant order number
+func MerchantOrderNumber(shopId int, id string, body MerchantOrderNumberBody, r Request) (MerchantOrderNumberReturn, error) {
+
+	// Convert body data
+	convert, err := json.Marshal(body)
+	if err != nil {
+		return MerchantOrderNumberReturn{}, err
+	}
+
+	// Config new request
+	c := Config{
+		Moa:    true,
+		Path:   fmt.Sprintf("/api/v2/shops/%d/orders/%s/merchant-order-number", shopId, id),
+		Method: "POST",
+		Body:   convert,
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.Moa = false
+		c.MoaSandbox = true
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return MerchantOrderNumberReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return MerchantOrderNumberReturn{}, err
+	}
+
+	// Decode data
+	var decode MerchantOrderNumberReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return MerchantOrderNumberReturn{}, err
 	}
 
 	// Return data
