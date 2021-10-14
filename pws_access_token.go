@@ -29,8 +29,8 @@ func PwsAccessToken(r Request) (PwsAccessTokenReturn, error) {
 
 	// Config new request
 	c := Config{
-		AccessToken: true,
-		Method:      "POST",
+		PwsAccessToken: true,
+		Method:         "POST",
 	}
 
 	// Send new request

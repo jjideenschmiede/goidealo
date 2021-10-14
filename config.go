@@ -18,16 +18,16 @@ import (
 )
 
 const (
-	accessTokenUrl = "https://api.idealo.com/mer/businessaccount/api/v1/oauth/token"
-	pwsBaseUrl     = "https://import.idealo.com"
-	moaBaseUrl     = "https://orders.idealo.com"
+	pwsAccessTokenUrl = "https://api.idealo.com/mer/businessaccount/api/v1/oauth/token"
+	pwsBaseUrl        = "https://import.idealo.com"
+	moaBaseUrl        = "https://orders.idealo.com"
 )
 
 // Config is to define config data
 type Config struct {
-	AccessToken, Pws, Moa bool
-	Path, Method          string
-	Body                  []byte
+	PwsAccessToken, MoaAccessToken, Pws, Moa bool
+	Path, Method                             string
+	Body                                     []byte
 }
 
 // Request is to define the request data
@@ -42,8 +42,10 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	var url string
 
 	switch {
-	case c.AccessToken:
-		url = accessTokenUrl
+	case c.PwsAccessToken:
+		url = pwsAccessTokenUrl
+	case c.MoaAccessToken:
+		url = moaBaseUrl + "/api/v2/oauth/token"
 	case c.Pws:
 		url = pwsBaseUrl + c.Path
 	case c.Moa:
