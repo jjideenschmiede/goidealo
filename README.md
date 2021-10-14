@@ -207,6 +207,7 @@ To generate an access token for the moa api, you can use the following function.
 r := goidealo.Request{
     ClientId:       "",
     ClientPassword: "",
+    Sandbox:        false,
 }
 
 // Get access token
