@@ -18,22 +18,6 @@ import (
 	"time"
 )
 
-// MerchantOrderNumberBody is to structure the data
-type MerchantOrderNumberBody struct {
-	MerchantOrderNumber string `json:"merchantOrderNumber"`
-}
-
-// MerchantOrderNumberReturn is to decode the json return
-type MerchantOrderNumberReturn struct {
-	Type        string `json:"type"`
-	Title       string `json:"title"`
-	Instance    string `json:"instance"`
-	FieldErrors []struct {
-		Field   string `json:"field"`
-		Message string `json:"message"`
-	} `json:"fieldErrors"`
-}
-
 // OrdersReturn is to decode the json return
 type OrdersReturn struct {
 	Content []struct {
@@ -65,10 +49,10 @@ type OrdersReturn struct {
 			FirstName    string `json:"firstName"`
 			LastName     string `json:"lastName"`
 			AddressLine1 string `json:"addressLine1"`
-			AddressLine2 string `json:"addressLine2"`
 			PostalCode   string `json:"postalCode"`
 			City         string `json:"city"`
 			CountryCode  string `json:"countryCode"`
+			AddressLine2 string `json:"addressLine2,omitempty"`
 		} `json:"billingAddress"`
 		ShippingAddress struct {
 			Salutation   string `json:"salutation"`
@@ -80,9 +64,12 @@ type OrdersReturn struct {
 			CountryCode  string `json:"countryCode"`
 		} `json:"shippingAddress"`
 		Fulfillment struct {
-			Method   string        `json:"method"`
-			Tracking []interface{} `json:"tracking"`
-			Options  []interface{} `json:"options"`
+			Method   string `json:"method"`
+			Tracking []struct {
+				Code    string `json:"code"`
+				Carrier string `json:"carrier"`
+			} `json:"tracking"`
+			Options []interface{} `json:"options"`
 		} `json:"fulfillment"`
 		Refunds []interface{} `json:"refunds"`
 	} `json:"content"`
@@ -140,6 +127,39 @@ type OrderReturn struct {
 		Options  []interface{} `json:"options"`
 	} `json:"fulfillment"`
 	Refunds []interface{} `json:"refunds"`
+}
+
+// MerchantOrderNumberBody is to structure the data
+type MerchantOrderNumberBody struct {
+	MerchantOrderNumber string `json:"merchantOrderNumber"`
+}
+
+// MerchantOrderNumberReturn is to decode the json return
+type MerchantOrderNumberReturn struct {
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Instance    string `json:"instance"`
+	FieldErrors []struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"fieldErrors"`
+}
+
+// FulfillmentInformationBody is to structure the data
+type FulfillmentInformationBody struct {
+	Carrier      string   `json:"carrier"`
+	TrackingCode []string `json:"trackingCode"`
+}
+
+// FulfillmentInformationReturn is to decode the json return
+type FulfillmentInformationReturn struct {
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Instance    string `json:"instance"`
+	FieldErrors []struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"fieldErrors"`
 }
 
 // Orders is to get a list of orders from the moa api
@@ -293,6 +313,57 @@ func MerchantOrderNumber(shopId int, id string, body MerchantOrderNumberBody, r 
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
 		return MerchantOrderNumberReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// FulfillmentInformation is to set the fulfillment information
+func FulfillmentInformation(shopId int, id string, body FulfillmentInformationBody, r Request) (FulfillmentInformationReturn, error) {
+
+	// Convert body data
+	convert, err := json.Marshal(body)
+	if err != nil {
+		return FulfillmentInformationReturn{}, err
+	}
+
+	// Config new request
+	c := Config{
+		Moa:    true,
+		Path:   fmt.Sprintf("/api/v2/shops/%d/orders/%s/fulfillment", shopId, id),
+		Method: "POST",
+		Body:   convert,
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.Moa = false
+		c.MoaSandbox = true
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return FulfillmentInformationReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return FulfillmentInformationReturn{}, err
+	}
+
+	// Decode data
+	var decode FulfillmentInformationReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return FulfillmentInformationReturn{}, err
 	}
 
 	// Return data
