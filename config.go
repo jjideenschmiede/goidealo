@@ -14,6 +14,7 @@ package goidealo
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 )
 
@@ -26,9 +27,9 @@ const (
 
 // Config is to define config data
 type Config struct {
-	PwsAccessToken, MoaAccessToken, Pws, Moa, MoaSandbox bool
-	Path, Method                                         string
-	Body                                                 []byte
+	PwsAccessToken, MoaAccessToken, MoaSandboxAccessToken, Pws, Moa, MoaSandbox bool
+	Path, Method                                                                string
+	Body                                                                        []byte
 }
 
 // Request is to define the request data
@@ -48,6 +49,8 @@ func (c Config) Send(r Request) (*http.Response, error) {
 		url = pwsAccessTokenUrl
 	case c.MoaAccessToken:
 		url = moaBaseUrl + c.Path
+	case c.MoaSandboxAccessToken:
+		url = moaSandboxBaseUrl + c.Path
 	case c.Pws:
 		url = pwsBaseUrl + c.Path
 	case c.Moa:
@@ -66,12 +69,15 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	}
 
 	// Check api type & add an api header
-	if c.Pws || c.Moa {
+	switch {
+	case c.Pws || c.Moa || c.MoaSandbox:
 		request.Header.Set("Content-Type", "application/json")
 		request.Header.Set("Authorization", "Bearer "+r.AccessToken)
-	} else {
+	default:
 		request.Header.Set("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(r.ClientId+":"+r.ClientPassword)))
 	}
+
+	fmt.Println(request)
 
 	// Send request & get response
 	response, err := client.Do(request)

@@ -22,7 +22,7 @@ type MoaAccessTokenReturn struct {
 	ShopId      int    `json:"shop_id"`
 }
 
-// MoaAccessToken is to generate a bearer token for the pws api
+// MoaAccessToken is to generate a bearer token for the moa api
 func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 
 	// Config new request
@@ -35,7 +35,7 @@ func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 	// Check sandbox
 	if r.Sandbox {
 		c.MoaAccessToken = false
-		c.MoaSandbox = true
+		c.MoaSandboxAccessToken = true
 	}
 
 	// Send new request
