@@ -265,3 +265,28 @@ if err != nil {
     fmt.Println(orders)
 }
 ```
+
+## Set Merchant Order Number
+
+If you want to set the merchant order number, you can do this using the following function. For this you need the shop id and the idealo order id. In addition, the body in the given struct. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-order-controller-it-set-merchant-order-number) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:        false,
+}
+
+// Define body
+body := goidealo.MerchantOrderNumberBody{
+    MerchantOrderNumber: "012345777777",
+}
+
+// Set a merchant order number
+merchantOrderNumber, err := goidealo.MerchantOrderNumber(325081, "00REAVQH3Y", body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(merchantOrderNumber)
+}
+```
