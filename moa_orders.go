@@ -73,6 +73,57 @@ type OrdersReturn struct {
 	TotalPages    int `json:"totalPages"`
 }
 
+// OrderReturn is to decode the json data
+type OrderReturn struct {
+	IdealoOrderId string    `json:"idealoOrderId"`
+	Created       time.Time `json:"created"`
+	Updated       time.Time `json:"updated"`
+	Status        string    `json:"status"`
+	Currency      string    `json:"currency"`
+	OffersPrice   string    `json:"offersPrice"`
+	GrossPrice    string    `json:"grossPrice"`
+	ShippingCosts string    `json:"shippingCosts"`
+	LineItems     []struct {
+		Title                string `json:"title"`
+		Price                string `json:"price"`
+		Quantity             int    `json:"quantity"`
+		Sku                  string `json:"sku"`
+		MerchantDeliveryText string `json:"merchantDeliveryText"`
+	} `json:"lineItems"`
+	Customer struct {
+		Email string `json:"email"`
+	} `json:"customer"`
+	Payment struct {
+		PaymentMethod string `json:"paymentMethod"`
+		TransactionId string `json:"transactionId"`
+	} `json:"payment"`
+	BillingAddress struct {
+		Salutation   string `json:"salutation"`
+		FirstName    string `json:"firstName"`
+		LastName     string `json:"lastName"`
+		AddressLine1 string `json:"addressLine1"`
+		AddressLine2 string `json:"addressLine2"`
+		PostalCode   string `json:"postalCode"`
+		City         string `json:"city"`
+		CountryCode  string `json:"countryCode"`
+	} `json:"billingAddress"`
+	ShippingAddress struct {
+		Salutation   string `json:"salutation"`
+		FirstName    string `json:"firstName"`
+		LastName     string `json:"lastName"`
+		AddressLine1 string `json:"addressLine1"`
+		PostalCode   string `json:"postalCode"`
+		City         string `json:"city"`
+		CountryCode  string `json:"countryCode"`
+	} `json:"shippingAddress"`
+	Fulfillment struct {
+		Method   string        `json:"method"`
+		Tracking []interface{} `json:"tracking"`
+		Options  []interface{} `json:"options"`
+	} `json:"fulfillment"`
+	Refunds []interface{} `json:"refunds"`
+}
+
 // Orders is to get a list of orders from the moa api
 func Orders(shopId int, parameter map[string]string, r Request) (OrdersReturn, error) {
 
@@ -108,12 +159,6 @@ func Orders(shopId int, parameter map[string]string, r Request) (OrdersReturn, e
 	parse.RawQuery = newUrl.Encode()
 	c.Path = fmt.Sprintf("%s", parse)
 
-	// Check sandbox
-	if r.Sandbox {
-		c.MoaAccessToken = false
-		c.MoaSandbox = true
-	}
-
 	// Send new request
 	response, err := c.Send(r)
 	if err != nil {
@@ -135,6 +180,50 @@ func Orders(shopId int, parameter map[string]string, r Request) (OrdersReturn, e
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
 		return OrdersReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// Order is to get a specific order
+func Order(shopId int, id string, r Request) (OrderReturn, error) {
+
+	// Config new request
+	c := Config{
+		Moa:    true,
+		Path:   fmt.Sprintf("/api/v2/shops/%d/orders/%s", shopId, id),
+		Method: "GET",
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.Moa = false
+		c.MoaSandbox = true
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return OrderReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return OrderReturn{}, err
+	}
+
+	// Decode data
+	var decode OrderReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return OrderReturn{}, err
 	}
 
 	// Return data
