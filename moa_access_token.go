@@ -11,12 +11,10 @@
 
 package goidealo
 
-import (
-	"encoding/json"
-)
+import "encoding/json"
 
-// PwsAccessTokenReturn is to decode the json return
-type PwsAccessTokenReturn struct {
+// MoaAccessTokenReturn is to decode the json return
+type MoaAccessTokenReturn struct {
 	AccessToken string `json:"access_token"`
 	TokenType   string `json:"token_type"`
 	ExpiresIn   int    `json:"expires_in"`
@@ -24,30 +22,30 @@ type PwsAccessTokenReturn struct {
 	ShopId      int    `json:"shop_id"`
 }
 
-// PwsAccessToken is to generate a bearer token for the pws api
-func PwsAccessToken(r Request) (PwsAccessTokenReturn, error) {
+// MoaAccessToken is to generate a bearer token for the pws api
+func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 
 	// Config new request
 	c := Config{
-		PwsAccessToken: true,
+		MoaAccessToken: true,
 		Method:         "POST",
 	}
 
 	// Send new request
 	response, err := c.Send(r)
 	if err != nil {
-		return PwsAccessTokenReturn{}, err
+		return MoaAccessTokenReturn{}, err
 	}
 
 	// Close request body
 	defer response.Body.Close()
 
 	// Decode data
-	var decode PwsAccessTokenReturn
+	var decode MoaAccessTokenReturn
 
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
-		return PwsAccessTokenReturn{}, err
+		return MoaAccessTokenReturn{}, err
 	}
 
 	// Return data
