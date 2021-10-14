@@ -195,3 +195,25 @@ if err != nil {
     fmt.Println(err)
 }
 ```
+
+## Generate access token for MOA2.0
+
+To generate an access token for the moa api, you can use the following function. **Important! The bearer token must be renewed after 3600 seconds.** If the sandbox system is to be used, then this token is not required.
+
+[Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-authorization-controller-it-client-login) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    ClientId:       "",
+    ClientPassword: "",
+}
+
+// Get access token
+accessToken, err := goidealo.MoaAccessToken(r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(accessToken)
+}
+```
