@@ -21,18 +21,20 @@ const (
 	pwsAccessTokenUrl = "https://api.idealo.com/mer/businessaccount/api/v1/oauth/token"
 	pwsBaseUrl        = "https://import.idealo.com"
 	moaBaseUrl        = "https://orders.idealo.com"
+	moaSandboxBaseUrl = "https://orders-sandbox.idealo.com"
 )
 
 // Config is to define config data
 type Config struct {
-	PwsAccessToken, MoaAccessToken, Pws, Moa bool
-	Path, Method                             string
-	Body                                     []byte
+	PwsAccessToken, MoaAccessToken, Pws, Moa, MoaSandbox bool
+	Path, Method                                         string
+	Body                                                 []byte
 }
 
 // Request is to define the request data
 type Request struct {
 	ClientId, ClientPassword, AccessToken string
+	Sandbox                               bool
 }
 
 // Send is to send a new request
@@ -45,11 +47,13 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	case c.PwsAccessToken:
 		url = pwsAccessTokenUrl
 	case c.MoaAccessToken:
-		url = moaBaseUrl + "/api/v2/oauth/token"
+		url = moaBaseUrl + c.Path
 	case c.Pws:
 		url = pwsBaseUrl + c.Path
 	case c.Moa:
 		url = moaBaseUrl + c.Path
+	case c.MoaSandbox:
+		url = moaSandboxBaseUrl + c.Path
 	}
 
 	// Define client
