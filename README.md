@@ -290,3 +290,28 @@ if err != nil {
     fmt.Println(merchantOrderNumber)
 }
 ```
+
+## Set Fulfillment Information
+
+If you want to assign the fulfillment to an order, you can do this with the following function. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-fulfillment-controller-it-set-fulfillment-information) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:        false,
+}
+
+// Define body
+body := goidealo.FulfillmentInformationBody{
+    Carrier:      "DHL",
+    TrackingCode: []string{"example-tracking-number-1234"},
+}
+// Set a merchant order number
+fulfillmentInformation, err := goidealo.FulfillmentInformation(325081, "00REAVQH3Y", body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(fulfillmentInformation)
+}
+```
