@@ -218,3 +218,30 @@ if err != nil {
     fmt.Println(accessToken)
 }
 ```
+
+## Get Orders
+
+To be able to read all orders, you can use the following function and populate it with url parameters. We have already set the url parameter pageSize. With a value of 250 orders. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-order-controller-it-get-orders) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:        false,
+}
+
+// Add url parameter
+parameter := make(map[string]string)
+
+parameter["status"] = "PROCESSING"
+parameter["from"] = "2019-05-01T00:00:00Z"
+parameter["pageNumber"] = "0"
+
+// Read all orders
+orders, err := goidealo.Orders(325081, parameter, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(orders)
+}
+```
