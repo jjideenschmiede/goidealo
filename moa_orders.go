@@ -187,12 +187,23 @@ type RefundOrderBody struct {
 	Currency     string  `json:"currency"`
 }
 
-// RefundOrderReturn is to decode the data
+// RefundOrderReturn is to decode the json return
 type RefundOrderReturn struct {
 	Type     string `json:"type"`
 	Title    string `json:"title"`
 	Instance string `json:"instance"`
 	Reason   string `json:"reason"`
+}
+
+// RefundsReturn is to decode the json return
+type RefundsReturn struct {
+	RefundId            string    `json:"refundId"`
+	RefundTransactionId string    `json:"refundTransactionId"`
+	Status              string    `json:"status"`
+	Currency            string    `json:"currency"`
+	RefundAmount        float64   `json:"refundAmount"`
+	Created             time.Time `json:"created"`
+	Updated             time.Time `json:"updated"`
 }
 
 // Orders is to get a list of orders from the moa api
@@ -499,6 +510,50 @@ func RefundOrder(shopId int, id string, body RefundOrderBody, r Request) (Refund
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
 		return RefundOrderReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// Refunds is to check the refunds for an order
+func Refunds(shopId int, id string, r Request) ([]RefundsReturn, error) {
+
+	// Config new request
+	c := Config{
+		Moa:    true,
+		Path:   fmt.Sprintf("/api/v2/shops/%d/orders/%s/refunds", shopId, id),
+		Method: "GET",
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.Moa = false
+		c.MoaSandbox = true
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return nil, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return nil, err
+	}
+
+	// Decode data
+	var decode []RefundsReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return nil, err
 	}
 
 	// Return data

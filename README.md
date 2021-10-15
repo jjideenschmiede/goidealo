@@ -307,7 +307,7 @@ body := goidealo.FulfillmentInformationBody{
     Carrier:      "DHL",
     TrackingCode: []string{"example-tracking-number-1234"},
 }
-// Set a merchant order number
+// Set a fulfillment information
 fulfillmentInformation, err := goidealo.FulfillmentInformation(325081, "00REAVQH3Y", body, r)
 if err != nil {
     fmt.Println(err)
@@ -328,15 +328,15 @@ r := goidealo.Request{
 }
 
 // Define body
-body := RevokeOrderBody{
+body := goidealo.RevokeOrderBody{
     Sku:               "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40",
     RemainingQuantity: 0,
     Reason:            "MERCHANT_DECLINE",
     Comment:           "Sorry, buddy.",
 }
 
-// Set a merchant order number
-revokeOrder, err := RevokeOrder(325081, "00ALP766AM", body, r)
+// Revoke an order
+revokeOrder, err := goidealo.RevokeOrder(325081, "00ALP766AM", body, r)
 if err != nil {
     fmt.Println(err)
 } else {
@@ -356,13 +356,33 @@ r := goidealo.Request{
 }
 
 // Define body
-body := RefundOrderBody{
+body := goidealo.RefundOrderBody{
     RefundAmount: 1.99,
     Currency:     "EUR",
 }
 
-// Set a merchant order number
-refundOrder, err := RefundOrder(325081, "00ALP766AM", body, r)
+// Set a refund for an order
+refundOrder, err := goidealo.RefundOrder(325081, "00ALP766AM", body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(refundOrder)
+}
+```
+
+## Get refunds 
+
+If you want to read out the refunds, this is done as follows. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-refund-controller-it-get-refunds) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:     false,
+}
+
+// Get refunds
+refundOrder, err := goidealo.Refunds(325081, "00ALP766AM", r)
 if err != nil {
     fmt.Println(err)
 } else {
