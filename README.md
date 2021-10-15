@@ -315,3 +315,31 @@ if err != nil {
     fmt.Println(fulfillmentInformation)
 }
 ```
+
+## Revoke order
+
+If an order is to be revoked, then you can do it through the following api endpoint. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-revocation-controller-it-custom-revoke-order) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:        false,
+}
+
+// Define body
+body := RevokeOrderBody{
+    Sku:               "21-Lloyd-27-600-12-Hagen-UK6.5-Gr.40",
+    RemainingQuantity: 0,
+    Reason:            "MERCHANT_DECLINE",
+    Comment:           "Sorry, buddy.",
+}
+
+// Set a merchant order number
+revokeOrder, err := RevokeOrder(325081, "00ALP766AM", body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(revokeOrder)
+}
+```
