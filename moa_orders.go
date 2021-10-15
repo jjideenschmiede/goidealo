@@ -162,6 +162,25 @@ type FulfillmentInformationReturn struct {
 	} `json:"fieldErrors"`
 }
 
+// RevokeOrderBody is to structure the data
+type RevokeOrderBody struct {
+	Sku               string `json:"sku"`
+	RemainingQuantity int    `json:"remainingQuantity"`
+	Reason            string `json:"reason"`
+	Comment           string `json:"comment"`
+}
+
+// RevokeOrderReturn is to decode the json return
+type RevokeOrderReturn struct {
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Instance    string `json:"instance"`
+	FieldErrors []struct {
+		Field   string `json:"field"`
+		Message string `json:"message"`
+	} `json:"fieldErrors"`
+}
+
 // Orders is to get a list of orders from the moa api
 func Orders(shopId int, parameter map[string]string, r Request) (OrdersReturn, error) {
 
@@ -364,6 +383,57 @@ func FulfillmentInformation(shopId int, id string, body FulfillmentInformationBo
 	err = json.NewDecoder(response.Body).Decode(&decode)
 	if err != nil {
 		return FulfillmentInformationReturn{}, err
+	}
+
+	// Return data
+	return decode, nil
+
+}
+
+// RevokeOrder is to set a revoke for an order
+func RevokeOrder(shopId int, id string, body RevokeOrderBody, r Request) (RevokeOrderReturn, error) {
+
+	// Convert body data
+	convert, err := json.Marshal(body)
+	if err != nil {
+		return RevokeOrderReturn{}, err
+	}
+
+	// Config new request
+	c := Config{
+		Moa:    true,
+		Path:   fmt.Sprintf("/api/v2/shops/%d/orders/%s/revocations", shopId, id),
+		Method: "POST",
+		Body:   convert,
+	}
+
+	// Check sandbox
+	if r.Sandbox {
+		c.Moa = false
+		c.MoaSandbox = true
+	}
+
+	// Send new request
+	response, err := c.Send(r)
+	if err != nil {
+		return RevokeOrderReturn{}, err
+	}
+
+	// Close request body
+	defer response.Body.Close()
+
+	// Check response status
+	err = pwsStatusCodes(response.Status)
+	if err != nil {
+		return RevokeOrderReturn{}, err
+	}
+
+	// Decode data
+	var decode RevokeOrderReturn
+
+	err = json.NewDecoder(response.Body).Decode(&decode)
+	if err != nil {
+		return RevokeOrderReturn{}, err
 	}
 
 	// Return data
