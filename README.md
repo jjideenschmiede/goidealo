@@ -227,7 +227,7 @@ To be able to read all orders, you can use the following function and populate i
 // Define request
 r := goidealo.Request{
     AccessToken: "",
-    Sandbox:        false,
+    Sandbox:     false,
 }
 
 // Add url parameter
@@ -254,7 +254,7 @@ If you want to read out a specific order, this is done as follows. **For this yo
 // Define request
 r := goidealo.Request{
     AccessToken: "",
-    Sandbox:        false,
+    Sandbox:     false,
 }
 
 // Read an order
@@ -274,7 +274,7 @@ If you want to set the merchant order number, you can do this using the followin
 // Define request
 r := goidealo.Request{
     AccessToken: "",
-    Sandbox:        false,
+    Sandbox:     false,
 }
 
 // Define body
@@ -299,7 +299,7 @@ If you want to assign the fulfillment to an order, you can do this with the foll
 // Define request
 r := goidealo.Request{
     AccessToken: "",
-    Sandbox:        false,
+    Sandbox:     false,
 }
 
 // Define body
@@ -324,7 +324,7 @@ If an order is to be revoked, then you can do it through the following api endpo
 // Define request
 r := goidealo.Request{
     AccessToken: "",
-    Sandbox:        false,
+    Sandbox:     false,
 }
 
 // Define body
@@ -341,5 +341,31 @@ if err != nil {
     fmt.Println(err)
 } else {
     fmt.Println(revokeOrder)
+}
+```
+
+## Refund order
+
+If you want to make a refund, then this goes through the following route. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-refund-controller-it-refund-order) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    AccessToken: "",
+    Sandbox:     false,
+}
+
+// Define body
+body := RefundOrderBody{
+    RefundAmount: 1.99,
+    Currency:     "EUR",
+}
+
+// Set a merchant order number
+refundOrder, err := RefundOrder(325081, "00ALP766AM", body, r)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(refundOrder)
 }
 ```
