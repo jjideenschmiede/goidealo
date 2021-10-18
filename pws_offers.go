@@ -190,12 +190,12 @@ func Offer(shopId int, sku string, r Request) (OfferReturn, error) {
 }
 
 // CreateOffer is to create an new offer
-func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
+func CreateOffer(shopId int, body OfferBody, r Request) error {
 
 	// Convert body
 	convert, err := json.Marshal(body)
 	if err != nil {
-		return OfferReturn{}, err
+		return err
 	}
 
 	// Config new request
@@ -209,7 +209,7 @@ func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 	// Send new request
 	response, err := c.Send(r)
 	if err != nil {
-		return OfferReturn{}, err
+		return err
 	}
 
 	// Close request body
@@ -218,19 +218,11 @@ func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 	// Check response status
 	err = pwsStatusCodes(response.Status)
 	if err != nil {
-		return OfferReturn{}, err
+		return err
 	}
 
-	// Decode data
-	var decode OfferReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return OfferReturn{}, err
-	}
-
-	// Return data
-	return decode, nil
+	// Return nothing
+	return nil
 
 }
 
