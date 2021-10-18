@@ -115,9 +115,11 @@ body.ImageUrls = append(body.ImageUrls, "https://www.marken-schuhmarkt.de/21-Llo
 body.Eans = append(body.Eans, "4032055134146")
 
 // Update the timestamp
-err := goidealo.CreateOffer(325081, body, r)
+offer, err := goidealo.CreateOffer(325081, body, r)
 if err != nil {
     fmt.Println(err)
+} else {
+	fmt.Println(offer)
 }
 ```
 
