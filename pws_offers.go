@@ -22,8 +22,8 @@ type OfferBody struct {
 	Title                    string                   `json:"title,omitempty"`
 	Price                    string                   `json:"price,omitempty"`
 	Url                      string                   `json:"url,omitempty"`
-	PaymentCosts             *OfferBodyPaymentCosts   `json:"paymentCosts,omitempty"`
-	DeliveryCosts            *OfferBodyDeliveryCosts  `json:"deliveryCosts,omitempty"`
+	PaymentCosts             interface{}              `json:"paymentCosts,omitempty"`
+	DeliveryCosts            interface{}              `json:"deliveryCosts,omitempty"`
 	BasePrice                string                   `json:"basePrice,omitempty"`
 	PackagingUnit            int                      `json:"packagingUnit,omitempty"`
 	VoucherCode              string                   `json:"voucherCode,omitempty"`
@@ -61,14 +61,6 @@ type OfferBody struct {
 	Used                     bool                     `json:"used,omitempty"`
 	Download                 bool                     `json:"download,omitempty"`
 	DynamicProductAttributes interface{}              `json:"dynamicProductAttributes,omitempty"`
-}
-
-type OfferBodyPaymentCosts struct {
-	PAYPAL string `json:"PAYPAL,omitempty"`
-}
-
-type OfferBodyDeliveryCosts struct {
-	DHL string `json:"DHL,omitempty"`
 }
 
 type OfferBodyEnergyLabels struct {
