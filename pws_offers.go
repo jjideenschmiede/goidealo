@@ -258,10 +258,7 @@ func UpdateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 	// Decode data
 	var decode OfferReturn
 
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return OfferReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
