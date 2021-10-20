@@ -251,18 +251,14 @@ func Orders(shopId int, parameter map[string]string, r Request) (OrdersReturn, e
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return OrdersReturn{}, err
 	}
 
 	// Decode data
 	var decode OrdersReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return OrdersReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -295,18 +291,14 @@ func Order(shopId int, id string, r Request) (OrderReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return OrderReturn{}, err
 	}
 
 	// Decode data
 	var decode OrderReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return OrderReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -346,18 +338,14 @@ func MerchantOrderNumber(shopId int, id string, body MerchantOrderNumberBody, r 
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return MerchantOrderNumberReturn{}, err
 	}
 
 	// Decode data
 	var decode MerchantOrderNumberReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return MerchantOrderNumberReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -397,18 +385,14 @@ func FulfillmentInformation(shopId int, id string, body FulfillmentInformationBo
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return FulfillmentInformationReturn{}, err
 	}
 
 	// Decode data
 	var decode FulfillmentInformationReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return FulfillmentInformationReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -448,18 +432,14 @@ func RevokeOrder(shopId int, id string, body RevokeOrderBody, r Request) (Revoke
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return RevokeOrderReturn{}, err
 	}
 
 	// Decode data
 	var decode RevokeOrderReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return RevokeOrderReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -499,18 +479,14 @@ func RefundOrder(shopId int, id string, body RefundOrderBody, r Request) (Refund
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return RefundOrderReturn{}, err
 	}
 
 	// Decode data
 	var decode RefundOrderReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return RefundOrderReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -543,18 +519,14 @@ func Refunds(shopId int, id string, r Request) ([]RefundsReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return nil, err
 	}
 
 	// Decode data
 	var decode []RefundsReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return nil, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
