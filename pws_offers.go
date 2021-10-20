@@ -163,18 +163,14 @@ func Offer(shopId int, sku string, r Request) (OfferReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return OfferReturn{}, err
 	}
 
 	// Decode data
 	var decode OfferReturn
-
-	err = json.NewDecoder(response.Body).Decode(&decode)
-	if err != nil {
-		return OfferReturn{}, err
-	}
+	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
 	return decode, nil
@@ -209,11 +205,10 @@ func CreateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 
 	// Decode data
 	var decode OfferReturn
-
 	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return OfferReturn{}, err
 	}
@@ -250,14 +245,13 @@ func UpdateOffer(shopId int, body OfferBody, r Request) (OfferReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return OfferReturn{}, err
 	}
 
 	// Decode data
 	var decode OfferReturn
-
 	json.NewDecoder(response.Body).Decode(&decode)
 
 	// Return data
@@ -285,7 +279,7 @@ func DeleteOffer(shopId int, sku string, r Request) error {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return err
 	}
@@ -315,7 +309,7 @@ func DeleteAllOffers(shopId int, r Request) error {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return err
 	}
@@ -345,7 +339,7 @@ func UpdateOffersTimestamp(shopId int, r Request) error {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return err
 	}
