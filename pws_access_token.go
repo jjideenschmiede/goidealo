@@ -43,7 +43,7 @@ func PwsAccessToken(r Request) (PwsAccessTokenReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return PwsAccessTokenReturn{}, err
 	}
