@@ -48,7 +48,7 @@ func MoaAccessToken(r Request) (MoaAccessTokenReturn, error) {
 	defer response.Body.Close()
 
 	// Check response status
-	err = pwsStatusCodes(response.Status)
+	err = statusCodes(response.Status)
 	if err != nil {
 		return MoaAccessTokenReturn{}, err
 	}
