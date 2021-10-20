@@ -16,8 +16,8 @@ import (
 	"strings"
 )
 
-// pwsStatusCodes
-func pwsStatusCodes(status string) error {
+// statusCodes
+func statusCodes(status string) error {
 
 	// Check each status codes
 	switch strings.ReplaceAll(status, " ", "") {
