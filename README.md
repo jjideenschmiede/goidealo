@@ -1,6 +1,6 @@
 # goidealo
 
-[![Go](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml/badge.svg)](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml) [![Go Doc](https://godoc.org/github.com/go-co-op/gocron?status.svg)](https://pkg.go.dev/github.com/jjideenschmiede/goidealo)
+[![Go](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml/badge.svg)](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/jjideenschmiede/goidealo)](https://goreportcard.com/report/github.com/jjideenschmiede/goidealo) [![Go Doc](https://godoc.org/github.com/go-co-op/gocron?status.svg)](https://pkg.go.dev/github.com/jjideenschmiede/goidealo)
 
 Here you can find our library for idealo. We develop the API endpoints according to our demand and need. You are welcome to help us to further develop this library.
 
