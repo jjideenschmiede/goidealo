@@ -4,7 +4,15 @@
 
 Here you can find our library for idealo. We develop the API endpoints according to our demand and need. You are welcome to help us to further develop this library.
 
-## Generate access token for PWS2.0 (Partner Web Service)
+## Install 
+
+```console
+go get github.com/jjideenschmiede/goidealo
+```
+
+## How to use?
+
+### Generate access token for PWS2.0 (Partner Web Service)
 
 To generate an access token for the pws api, you can use the following function. **Important! The bearer token must be renewed after 3600 seconds.**
 
@@ -26,7 +34,7 @@ if err != nil {
 }
 ```
 
-## Read an offer
+### Read an offer
 
 With this function you can read an offer based on the sku. The following attributes are needed for this:
 
@@ -49,7 +57,7 @@ if err != nil {
 }
 ```
 
-## Writes an offer
+### Writes an offer
 
 If you want to create a new offer, then this goes as follows. Some attributes are needed for this. You can see them in the following example. [Here](https://import.idealo.com/docs/#_put) you can find the description in the idealo documentation.
 
@@ -125,7 +133,7 @@ if err != nil {
 }
 ```
 
-## Partially updates an offer
+### Partially updates an offer
 
 If you want to revise an offer, you can do it as follows. [Here](https://import.idealo.com/docs/#_patch) you can find the description in the idealo documentation.
 
@@ -147,7 +155,7 @@ if err != nil {
 ```
 
 
-## Delete an offer 
+### Delete an offer 
 
 If you want to remove a special offer, you can do this with the following function. For this some attributes like shop id, sku and the access token are needed. [Here](https://import.idealo.com/docs/#_delete) you can find the description in the idealo documentation.
 
@@ -164,7 +172,7 @@ if err != nil {
 }
 ```
 
-## Delete all existing offers
+### Delete all existing offers
 
 If you want to remove all existing offers, then you can do this with the following function, for this the shop id and the access token are needed. [Here](https://import.idealo.com/docs/#_delete_all) you can find the description in the idealo documentation.
 
@@ -181,7 +189,7 @@ if err != nil {
 }
 ```
 
-## Updating the import timestamp for all offers
+### Updating the import timestamp for all offers
 
 If you want to update the timestamp of all products, you can do it as follows. You only need the store id and the access token. [Here](https://import.idealo.com/docs/#_update_timestamp) you can find the description in the idealo documentation.
 
@@ -198,7 +206,7 @@ if err != nil {
 }
 ```
 
-## Generate access token for MOA2.0
+### Generate access token for MOA2.0
 
 To generate an access token for the moa api, you can use the following function. **Important! The bearer token must be renewed after 3600 seconds.** If the sandbox system is to be used, then this token is not required.
 
@@ -221,7 +229,7 @@ if err != nil {
 }
 ```
 
-## Get orders
+### Get orders
 
 To be able to read all orders, you can use the following function and populate it with url parameters. We have already set the url parameter pageSize. With a value of 250 orders. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-order-controller-it-get-orders) you can find the description in the idealo documentation.
 
@@ -248,7 +256,7 @@ if err != nil {
 }
 ```
 
-## Get order
+### Get order
 
 If you want to read out a specific order, this is done as follows. **For this you need the id of the shop and the id of the order.** [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-order-controller-it-custom-get-order) you can find the description in the idealo documentation.
 
@@ -268,7 +276,7 @@ if err != nil {
 }
 ```
 
-## Set Merchant Order Number
+### Set Merchant Order Number
 
 If you want to set the merchant order number, you can do this using the following function. For this you need the shop id and the idealo order id. In addition, the body in the given struct. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-order-controller-it-set-merchant-order-number) you can find the description in the idealo documentation.
 
@@ -293,7 +301,7 @@ if err != nil {
 }
 ```
 
-## Set Fulfillment Information
+### Set Fulfillment Information
 
 If you want to assign the fulfillment to an order, you can do this with the following function. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-fulfillment-controller-it-set-fulfillment-information) you can find the description in the idealo documentation.
 
@@ -318,7 +326,7 @@ if err != nil {
 }
 ```
 
-## Revoke order
+### Revoke order
 
 If an order is to be revoked, then you can do it through the following api endpoint. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-revocation-controller-it-custom-revoke-order) you can find the description in the idealo documentation.
 
@@ -346,7 +354,7 @@ if err != nil {
 }
 ```
 
-## Refund order
+### Refund order
 
 If you want to make a refund, then this goes through the following route. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-refund-controller-it-refund-order) you can find the description in the idealo documentation.
 
@@ -372,7 +380,7 @@ if err != nil {
 }
 ```
 
-## Get refunds 
+### Get refunds 
 
 If you want to read out the refunds, this is done as follows. [Here](https://cdn.idealo.com/folder/Direktkauf/documentation/merchant-order-api-v2.html#resources-refund-controller-it-get-refunds) you can find the description in the idealo documentation.
 
