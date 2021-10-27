@@ -23,7 +23,7 @@ To allow technology partners to transfer their headers as well, we have added an
 r := goidealo.Request{
     ClientId:       "",
     ClientPassword: "",
-	Header:         map[string]string{},
+    Header:         map[string]string{},
 }
 
 // Add header
