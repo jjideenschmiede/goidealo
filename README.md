@@ -12,6 +12,28 @@ go get github.com/jjideenschmiede/goidealo
 
 ## How to use?
 
+### Technology Partner Header
+
+To allow technology partners to transfer their headers as well, we have added another parameter to the request. Now you can set new values flexibly.
+
+[Here](https://connect.idealo.de/pam/DE_idealo-PWS-API_Header.pdf) you can find the description in the idealo documentation.
+
+```go
+// Define request
+r := goidealo.Request{
+    ClientId:       "",
+    ClientPassword: "",
+	Header:         map[string]string{},
+}
+
+// Add header
+r.Header["Partner-Merchant-Solution"] = "J&J Afterialo"
+r.Header["Partner-Merchant-Solution-Version"] = "1.0.0"
+r.Header["Integration-Partner"] = "J&J Ideenschmiede GmbH"
+r.Header["Interface-Version"] = "unbekannt"
+```
+
+
 ### Generate access token for PWS2.0 (Partner Web Service)
 
 To generate an access token for the pws api, you can use the following function. **Important! The bearer token must be renewed after 3600 seconds.**
