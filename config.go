@@ -14,6 +14,7 @@ package goidealo
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 )
 
@@ -35,6 +36,7 @@ type Config struct {
 type Request struct {
 	ClientId, ClientPassword, AccessToken string
 	Sandbox                               bool
+	Header                                map[string]string
 }
 
 // Send is to send a new request
@@ -67,6 +69,11 @@ func (c Config) Send(r Request) (*http.Response, error) {
 		return nil, err
 	}
 
+	// Set header
+	for index, value := range r.Header {
+		request.Header.Set(index, value)
+	}
+
 	// Check api type & add an api header
 	switch {
 	case c.Pws || c.Moa || c.MoaSandbox:
@@ -75,6 +82,10 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	default:
 		request.Header.Set("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(r.ClientId+":"+r.ClientPassword)))
 	}
+
+	// DELETE //
+	fmt.Println(request.Header)
+	// DELETE //
 
 	// Send request & get response
 	response, err := client.Do(request)
