@@ -14,7 +14,6 @@ package goidealo
 import (
 	"bytes"
 	"encoding/base64"
-	"fmt"
 	"net/http"
 )
 
@@ -82,10 +81,6 @@ func (c Config) Send(r Request) (*http.Response, error) {
 	default:
 		request.Header.Set("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(r.ClientId+":"+r.ClientPassword)))
 	}
-
-	// DELETE //
-	fmt.Println(request.Header)
-	// DELETE //
 
 	// Send request & get response
 	response, err := client.Do(request)
