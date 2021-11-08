@@ -1,6 +1,6 @@
 # goidealo
 
-[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/jjideenschmiede/goidealo.svg)](https://golang.org/) [![Go](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml/badge.svg)](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/jjideenschmiede/goidealo)](https://goreportcard.com/report/github.com/jjideenschmiede/goidealo) [![Go Doc](https://godoc.org/github.com/jjideenschmiede/goidealo?status.svg)](https://pkg.go.dev/github.com/jjideenschmiede/goidealo)
+[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/jjideenschmiede/goidealo.svg)](https://golang.org/) [![Go](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml/badge.svg)](https://github.com/jjideenschmiede/goidealo/actions/workflows/go.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/jjideenschmiede/goidealo)](https://goreportcard.com/report/github.com/jjideenschmiede/goidealo) [![Go Doc](https://godoc.org/github.com/jjideenschmiede/goidealo?status.svg)](https://pkg.go.dev/github.com/jjideenschmiede/goidealo) ![Lines of code](https://img.shields.io/tokei/lines/github/jjideenschmiede/goidealo) [![Developed with <3](https://img.shields.io/badge/Developed%20with-%3C3-19ABFF)](https://jj-dev.de/)
 
 Here you can find our library for idealo. We develop the API endpoints according to our demand and need. You are welcome to help us to further develop this library.
 
