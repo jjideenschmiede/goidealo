@@ -66,12 +66,29 @@ type OrdersReturn struct {
 			AddressLine2 string `json:"addressLine2,omitempty"`
 		} `json:"shippingAddress"`
 		Fulfillment struct {
-			Method   string        `json:"method"`
-			Tracking []interface{} `json:"tracking"`
-			Options  []interface{} `json:"options"`
+			Method   string `json:"method"`
+			Tracking []struct {
+				Code    string `json:"code"`
+				Carrier string `json:"carrier"`
+			} `json:"tracking"`
+			Options []struct {
+				ForwardOption string `json:"forwardOption"`
+				Price         string `json:"price"`
+			} `json:"options"`
 		} `json:"fulfillment"`
-		Refunds             []interface{} `json:"refunds"`
-		MerchantOrderNumber string        `json:"merchantOrderNumber,omitempty"`
+		Refunds []struct {
+			RefundId            string    `json:"refundId"`
+			RefundTransactionId string    `json:"refundTransactionId"`
+			Status              string    `json:"status"`
+			Currency            string    `json:"currency"`
+			RefundAmount        float64   `json:"refundAmount"`
+			Created             time.Time `json:"created"`
+			Updated             time.Time `json:"updated"`
+		} `json:"refunds"`
+		Voucher struct {
+			Code string `json:"code"`
+		} `json:"voucher"`
+		MerchantOrderNumber string `json:"merchantOrderNumber,omitempty"`
 	} `json:"content"`
 	TotalElements int `json:"totalElements"`
 	TotalPages    int `json:"totalPages"`
