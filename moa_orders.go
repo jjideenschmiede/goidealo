@@ -21,24 +21,25 @@ import (
 // OrdersReturn is to decode the json return
 type OrdersReturn struct {
 	Content []struct {
-		IdealoOrderId       string    `json:"idealoOrderId"`
-		MerchantOrderNumber string    `json:"merchantOrderNumber"`
-		Created             time.Time `json:"created"`
-		Updated             time.Time `json:"updated"`
-		Status              string    `json:"status"`
-		Currency            string    `json:"currency"`
-		OffersPrice         string    `json:"offersPrice"`
-		GrossPrice          string    `json:"grossPrice"`
-		ShippingCosts       string    `json:"shippingCosts"`
-		LineItems           []struct {
+		IdealoOrderId string    `json:"idealoOrderId"`
+		Created       time.Time `json:"created"`
+		Updated       time.Time `json:"updated"`
+		Status        string    `json:"status"`
+		Currency      string    `json:"currency"`
+		OffersPrice   string    `json:"offersPrice"`
+		GrossPrice    string    `json:"grossPrice"`
+		ShippingCosts string    `json:"shippingCosts"`
+		LineItems     []struct {
 			Title                string `json:"title"`
 			Price                string `json:"price"`
 			Quantity             int    `json:"quantity"`
+			RemainingQuantity    int    `json:"remainingQuantity"`
 			Sku                  string `json:"sku"`
 			MerchantDeliveryText string `json:"merchantDeliveryText"`
 		} `json:"lineItems"`
 		Customer struct {
 			Email string `json:"email"`
+			Phone string `json:"phone,omitempty"`
 		} `json:"customer"`
 		Payment struct {
 			PaymentMethod string `json:"paymentMethod"`
@@ -62,16 +63,15 @@ type OrdersReturn struct {
 			PostalCode   string `json:"postalCode"`
 			City         string `json:"city"`
 			CountryCode  string `json:"countryCode"`
+			AddressLine2 string `json:"addressLine2,omitempty"`
 		} `json:"shippingAddress"`
 		Fulfillment struct {
-			Method   string `json:"method"`
-			Tracking []struct {
-				Code    string `json:"code"`
-				Carrier string `json:"carrier"`
-			} `json:"tracking"`
-			Options []interface{} `json:"options"`
+			Method   string        `json:"method"`
+			Tracking []interface{} `json:"tracking"`
+			Options  []interface{} `json:"options"`
 		} `json:"fulfillment"`
-		Refunds []interface{} `json:"refunds"`
+		Refunds             []interface{} `json:"refunds"`
+		MerchantOrderNumber string        `json:"merchantOrderNumber,omitempty"`
 	} `json:"content"`
 	TotalElements int `json:"totalElements"`
 	TotalPages    int `json:"totalPages"`
@@ -122,11 +122,28 @@ type OrderReturn struct {
 		CountryCode  string `json:"countryCode"`
 	} `json:"shippingAddress"`
 	Fulfillment struct {
-		Method   string        `json:"method"`
-		Tracking []interface{} `json:"tracking"`
-		Options  []interface{} `json:"options"`
+		Method   string `json:"method"`
+		Tracking []struct {
+			Code    string `json:"code"`
+			Carrier string `json:"carrier"`
+		} `json:"tracking"`
+		Options []struct {
+			ForwardOption string `json:"forwardOption"`
+			Price         string `json:"price"`
+		} `json:"options"`
 	} `json:"fulfillment"`
-	Refunds []interface{} `json:"refunds"`
+	Refunds []struct {
+		RefundId            string    `json:"refundId"`
+		RefundTransactionId string    `json:"refundTransactionId"`
+		Status              string    `json:"status"`
+		Currency            string    `json:"currency"`
+		RefundAmount        float64   `json:"refundAmount"`
+		Created             time.Time `json:"created"`
+		Updated             time.Time `json:"updated"`
+	} `json:"refunds"`
+	Voucher struct {
+		Code string `json:"code"`
+	} `json:"voucher"`
 }
 
 // MerchantOrderNumberBody is to structure the data
