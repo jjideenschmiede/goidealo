@@ -44,7 +44,7 @@ type OfferBody struct {
 	MaxOrderProcessingTime   int                      `json:"maxOrderProcessingTime,omitempty"`
 	FreeReturnDays           int                      `json:"freeReturnDays,omitempty"`
 	Checkout                 bool                     `json:"checkout,omitempty"`
-	CheckoutLimitPerPeriod   int                      `json:"checkoutLimitPerPeriod,omitempty"`
+	CheckoutLimitPerPeriod   int                      `json:"checkoutLimitPerPeriod"`
 	QuantityPerOrder         int                      `json:"quantityPerOrder,omitempty"`
 	MinimumPrice             string                   `json:"minimumPrice,omitempty"`
 	FulfillmentType          string                   `json:"fulfillmentType,omitempty"`
