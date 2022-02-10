@@ -83,6 +83,8 @@ if err != nil {
 
 If you want to create a new offer, then this goes as follows. Some attributes are needed for this. You can see them in the following example. [Here](https://import.idealo.com/docs/#_put) you can find the description in the idealo documentation.
 
+**Important! You need to fill in the following data, as it will always be submitted in the requests: CheckoutLimitPerPeriod.**
+
 ```go
 // Define request
 r := goidealo.Request{
