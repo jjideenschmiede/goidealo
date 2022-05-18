@@ -42,7 +42,7 @@ type OfferBody struct {
 	DeliveryComment          string                   `json:"deliveryComment,omitempty"`
 	Delivery                 string                   `json:"delivery,omitempty"`
 	MaxOrderProcessingTime   int                      `json:"maxOrderProcessingTime,omitempty"`
-	FreeReturnDays           int                      `json:"freeReturnDays"`
+	FreeReturnDays           int                      `json:"freeReturnDays,omitempty"`
 	Checkout                 bool                     `json:"checkout,omitempty"`
 	CheckoutLimitPerPeriod   int                      `json:"checkoutLimitPerPeriod"`
 	QuantityPerOrder         int                      `json:"quantityPerOrder,omitempty"`
