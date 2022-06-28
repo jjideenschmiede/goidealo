@@ -46,7 +46,6 @@ type OrdersReturn struct {
 			TransactionId string `json:"transactionId"`
 		} `json:"payment"`
 		BillingAddress struct {
-			Salutation   string `json:"salutation"`
 			FirstName    string `json:"firstName"`
 			LastName     string `json:"lastName"`
 			AddressLine1 string `json:"addressLine1"`
@@ -56,7 +55,6 @@ type OrdersReturn struct {
 			AddressLine2 string `json:"addressLine2,omitempty"`
 		} `json:"billingAddress"`
 		ShippingAddress struct {
-			Salutation   string `json:"salutation"`
 			FirstName    string `json:"firstName"`
 			LastName     string `json:"lastName"`
 			AddressLine1 string `json:"addressLine1"`
@@ -120,7 +118,6 @@ type OrderReturn struct {
 		TransactionId string `json:"transactionId"`
 	} `json:"payment"`
 	BillingAddress struct {
-		Salutation   string `json:"salutation"`
 		FirstName    string `json:"firstName"`
 		LastName     string `json:"lastName"`
 		AddressLine1 string `json:"addressLine1"`
@@ -130,7 +127,6 @@ type OrderReturn struct {
 		CountryCode  string `json:"countryCode"`
 	} `json:"billingAddress"`
 	ShippingAddress struct {
-		Salutation   string `json:"salutation"`
 		FirstName    string `json:"firstName"`
 		LastName     string `json:"lastName"`
 		AddressLine1 string `json:"addressLine1"`
